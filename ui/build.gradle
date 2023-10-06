@@ -17,8 +17,6 @@ android {
 
 dependencies {
     implementation project(':domain')
-    implementation project(':core')
-    testImplementation project(':core')
 
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
