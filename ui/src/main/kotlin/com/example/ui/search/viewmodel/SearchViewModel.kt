@@ -51,7 +51,7 @@ class SearchViewModel @Inject constructor(
     ) {
         val viewState = when (result) {
             is UserDataResult.Success -> SearchResultState.Success(searchQuery, result.data.users)
-            is UserDataResult.Error -> SearchResultState.Error
+            is UserDataResult.Error -> SearchResultState.Error(result.errorMessage)
         }
 
         _searchResultState.emit(viewState)

@@ -95,16 +95,16 @@ private fun SearchResultContent(
             onItemClick = onResultItemClick,
         )
 
-        is SearchResultState.Error -> ShowErrorMessage()
+        is SearchResultState.Error -> ShowErrorMessage(searchResultState.errorMessage)
         else -> {}
     }
 }
 
 @Composable
-private fun ShowErrorMessage() {
+private fun ShowErrorMessage(errorMessage: String? = null) {
     Toast.makeText(
         LocalContext.current,
-        "Something went wrong",
+        errorMessage ?: "Something went wrong",
         Toast.LENGTH_LONG,
     ).show()
 }
