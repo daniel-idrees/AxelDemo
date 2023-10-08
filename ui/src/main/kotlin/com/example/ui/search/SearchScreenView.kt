@@ -38,17 +38,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.domain.model.User
 import com.example.domain.model.UserDetail
 import com.example.ui.search.state.SearchResultState
 import com.example.ui.search.state.UserDetailState
 import com.example.ui.search.viewmodel.SearchViewModel
+import com.example.ui.style.UserNameHeaderTextStyle
 import com.example.ui.views.DisplayImage
 import com.example.ui.views.LoadingView
 import com.example.ui.views.spaceS
@@ -283,9 +281,7 @@ private fun UserDetailContent(detail: UserDetail) {
             text = detail.userName,
             modifier = Modifier
                 .fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
+            style = UserNameHeaderTextStyle,
         )
 
         if (detail.noOfFollowers != null) {
