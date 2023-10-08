@@ -3,13 +3,13 @@ package com.example.ui.search.viewmodel
 import com.example.domain.model.UserDataResult
 import com.example.domain.usecase.GetUserDetailsUseCase
 import com.example.domain.usecase.GetUsersUseCase
+import com.example.ui.common.MainDispatcherRule
 import com.example.ui.search.state.SearchResultState
 import com.example.ui.search.state.UserDetailState
 import com.example.ui.utils.FakeObjects.mockSearchQuery
 import com.example.ui.utils.FakeObjects.mockSearchResult
 import com.example.ui.utils.FakeObjects.mockUserDetail
 import com.example.ui.utils.FakeObjects.mockUserName
-import com.patronusgroup.presentation.common.MainDispatcherRule
 import io.kotest.common.runBlocking
 import io.kotest.matchers.shouldBe
 import org.junit.Rule

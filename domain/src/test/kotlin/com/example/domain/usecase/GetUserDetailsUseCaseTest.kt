@@ -1,9 +1,9 @@
 package com.example.domain.usecase
 
-import com.example.domain.utils.FakeObjects.mockUserDetail
-import com.example.domain.utils.FakeObjects.mockUserName
 import com.example.domain.model.UserDataResult
 import com.example.domain.repository.UserRepository
+import com.example.domain.utils.FakeObjects.mockUserDetail
+import com.example.domain.utils.FakeObjects.mockUserName
 import io.kotest.common.runBlocking
 import io.kotest.matchers.shouldBe
 import org.junit.Test
