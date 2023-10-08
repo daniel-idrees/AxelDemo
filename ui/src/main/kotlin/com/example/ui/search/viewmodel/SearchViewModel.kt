@@ -7,8 +7,8 @@ import com.example.domain.model.UserDataResult
 import com.example.domain.model.UserDetail
 import com.example.domain.usecase.GetUserDetailsUseCase
 import com.example.domain.usecase.GetUsersUseCase
-import com.example.ui.detail.state.UserDetailState
 import com.example.ui.search.state.SearchResultState
+import com.example.ui.search.state.UserDetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

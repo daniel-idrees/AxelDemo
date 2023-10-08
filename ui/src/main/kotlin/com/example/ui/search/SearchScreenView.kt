@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.domain.model.User
 import com.example.domain.model.UserDetail
-import com.example.ui.detail.state.UserDetailState
+import com.example.ui.search.state.UserDetailState
 import com.example.ui.search.state.SearchResultState
 import com.example.ui.search.viewmodel.SearchViewModel
 import com.example.ui.views.DisplayImage
