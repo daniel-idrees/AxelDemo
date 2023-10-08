@@ -9,7 +9,13 @@ import retrofit2.http.Query
 
 internal interface GithubUserService {
     @GET("search/users")
-    suspend fun getUsers(@Query("q") query: String): SearchResultResponse
+    suspend fun getUsers(
+        @Query("q") query: String,
+        @Query("sort") sort: String? = null,
+        @Query("order") order: String? = null,
+        @Query("per_page") perPage: Int? = null,
+        @Query("page") page: Int? = null,
+    ): SearchResultResponse
 
     @GET("users/{user_name}/followers")
     suspend fun getUserFollowers(@Path("user_name") userName: String): List<FollowerDto>
