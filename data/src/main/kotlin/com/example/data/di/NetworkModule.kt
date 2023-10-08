@@ -16,11 +16,11 @@ internal class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient() = OkHttpClient().newBuilder().build()
+    fun provideOkHttpClient(): OkHttpClient = OkHttpClient().newBuilder().build()
 
     @Provides
     @Singleton
-    fun provideRetrofitBuilder(client: OkHttpClient) = Retrofit.Builder()
+    fun provideRetrofitBuilder(client: OkHttpClient): Retrofit.Builder = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create())
         .client(client)
 
