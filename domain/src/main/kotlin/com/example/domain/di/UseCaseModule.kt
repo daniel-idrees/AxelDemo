@@ -1,4 +1,4 @@
-package com.example.axeldemo.di
+package com.example.domain.di
 
 import com.example.domain.repository.UserRepository
 import com.example.domain.usecase.GetUserDetailsUseCase
