@@ -51,7 +51,6 @@ import com.example.ui.search.state.UserDetailState
 import com.example.ui.search.viewmodel.SearchViewModel
 import com.example.ui.views.DisplayImage
 import com.example.ui.views.LoadingView
-import com.example.ui.views.spaceL
 import com.example.ui.views.spaceS
 import com.example.ui.views.spaceXS
 
@@ -76,18 +75,30 @@ fun SearchScreenView(
         verticalArrangement = verticalArrangement,
     ) {
         SearchBar(onSearchButtonClick = viewModel::loadDataIfNewSearchQuery)
+        SearchResultContent(
+            searchResultState,
+            detailDataState,
+            viewModel::loadDetails,
+        )
+    }
+}
 
-        when (searchResultState) {
-            is SearchResultState.Loading -> LoadingView()
-            is SearchResultState.Success -> UserListView(
-                detailDataState,
-                users = (searchResultState as SearchResultState.Success).users,
-                onItemClick = viewModel::loadDetails,
-            )
+@Composable
+private fun SearchResultContent(
+    searchResultState: SearchResultState,
+    detailDataState: UserDetailState,
+    onResultItemClick: (String) -> Unit,
+) {
+    when (searchResultState) {
+        is SearchResultState.Loading -> LoadingView()
+        is SearchResultState.Success -> ResultView(
+            detailDataState,
+            users = searchResultState.users,
+            onItemClick = onResultItemClick,
+        )
 
-            is SearchResultState.Error -> ShowErrorMessage()
-            else -> {}
-        }
+        is SearchResultState.Error -> ShowErrorMessage()
+        else -> {}
     }
 }
 
@@ -101,25 +112,7 @@ private fun ShowErrorMessage() {
 }
 
 @Composable
-private fun SearchBar(
-    onSearchButtonClick: (String) -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = spaceS, start = spaceS, end = spaceS),
-        horizontalArrangement = Arrangement.spacedBy(
-            space = spaceL,
-            alignment = Alignment.CenterHorizontally,
-        ),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        SearchInputField(onSearchButtonClick = onSearchButtonClick)
-    }
-}
-
-@Composable
-private fun SearchInputField(onSearchButtonClick: (String) -> Unit) {
+private fun SearchBar(onSearchButtonClick: (String) -> Unit) {
     val focusManager = LocalFocusManager.current
     var text by rememberSaveable { mutableStateOf("") }
 
@@ -131,17 +124,21 @@ private fun SearchInputField(onSearchButtonClick: (String) -> Unit) {
     }
 
     OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = spaceS, start = spaceS, end = spaceS),
+        trailingIcon = { SearchButton(onSearchClick) },
         value = text,
+        singleLine = true,
         onValueChange = { text = it },
         label = { Text("Search a user") },
     )
-
-    SearchButton(onSearchClick)
 }
 
 @Composable
 private fun SearchButton(onSearchClick: () -> Unit) {
     Button(
+        modifier = Modifier.padding(spaceXS),
         onClick = onSearchClick,
         shape = CircleShape,
         contentPadding = PaddingValues(1.dp),
@@ -149,57 +146,92 @@ private fun SearchButton(onSearchClick: () -> Unit) {
         Icon(
             imageVector = Icons.Default.Search,
             contentDescription = "Search",
-            modifier = Modifier.size(20.dp),
         )
     }
 }
 
 @Composable
-private fun UserListView(
+private fun ResultView(
+    userDetailState: UserDetailState,
+    users: List<User>,
+    onItemClick: (String) -> Unit,
+) {
+    if (users.isEmpty()) {
+        Text(
+            modifier = Modifier.padding(top = spaceXS, start = spaceS, end = spaceS),
+            text = "No results found",
+        )
+    } else {
+        ResultList(userDetailState, users, onItemClick)
+    }
+}
+
+@Composable
+private fun ResultList(
     userDetailState: UserDetailState,
     users: List<User>,
     onItemClick: (String) -> Unit,
 ) {
     var shouldShowDetail by remember { mutableStateOf(false) }
+    val onUserItemClick: (String) -> Unit = { s ->
+        run {
+            shouldShowDetail = true
+            onItemClick(s)
+        }
+    }
 
-    if (users.isEmpty()) {
-        Text(
-            text = "No results found",
+    Column {
+        UserListView(
+            Modifier.weight(3f),
+            users,
+            onUserItemClick,
         )
-    } else {
-        Column {
-            LazyColumn(
-                modifier = Modifier
-                    .weight(3f)
-                    .padding(top = spaceXS, start = spaceS, end = spaceS),
-                verticalArrangement = Arrangement.spacedBy(spaceS),
+
+        if (shouldShowDetail) {
+            DetailContent(userDetailState, Modifier.weight(1f)) { shouldShowDetail = false }
+        }
+    }
+}
+
+@Composable
+private fun UserListView(
+    modifier: Modifier,
+    users: List<User>,
+    function: (String) -> Unit,
+) {
+    LazyColumn(
+        modifier = modifier
+            .padding(top = spaceXS, start = spaceS, end = spaceS),
+        verticalArrangement = Arrangement.spacedBy(spaceS),
+    ) {
+        items(users) { user ->
+            UserListItem(
+                user,
             ) {
-                items(users) { user ->
-                    UserListItem(
-                        user,
-                    ) {
-                        shouldShowDetail = true
-                        onItemClick(user.name)
-                    }
-                }
-            }
-
-            if (shouldShowDetail) {
-                when (userDetailState) {
-                    is UserDetailState.Success ->
-                        Box(modifier = Modifier.weight(1f)) {
-                            UserDetailView(userDetailState.detail) { shouldShowDetail = false }
-                        }
-
-                    is UserDetailState.Loading ->
-                        Box(modifier = Modifier.weight(1f)) {
-                            LoadingView()
-                        }
-
-                    is UserDetailState.Error -> ShowErrorMessage()
-                }
+                function(user.name)
             }
         }
+    }
+}
+
+@Composable
+private fun DetailContent(
+    userDetailState: UserDetailState,
+    modifier: Modifier,
+    onDetailHide: () -> Unit,
+) {
+    when (userDetailState) {
+        is UserDetailState.Success ->
+            Box(modifier = modifier) {
+                UserDetailView(userDetailState.detail, hideDetailAction = onDetailHide)
+            }
+
+        is UserDetailState.Loading ->
+            Box(modifier = modifier) {
+                LoadingView()
+            }
+
+        is UserDetailState.Error -> ShowErrorMessage()
     }
 }
 
@@ -220,10 +252,16 @@ private fun UserDetailView(detail: UserDetail, hideDetailAction: () -> Unit) {
 
 @Composable
 private fun TopEndCloseButton(onCloseButtonClick: () -> Unit) {
-    Box(modifier = Modifier.fillMaxWidth().padding(spaceXS)) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(spaceXS),
+    ) {
         OutlinedButton(
             onClick = onCloseButtonClick,
-            modifier = Modifier.align(Alignment.TopEnd).size(20.dp),
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .size(20.dp),
             shape = CircleShape,
             contentPadding = PaddingValues(1.dp),
         ) {
@@ -282,7 +320,7 @@ private fun UserListItem(user: User, onItemClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 private fun UserListPreview() {
-    UserListView(
+    ResultView(
         userDetailState = UserDetailState.Loading,
         users = listOf(
             User(name = "user one", "fake url"),
