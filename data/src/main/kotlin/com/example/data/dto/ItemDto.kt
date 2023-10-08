@@ -2,7 +2,7 @@ package com.example.data.dto
 
 import com.squareup.moshi.Json
 
-data class ItemDto(
+internal data class ItemDto(
     @field:Json(name = "login")
     val name: String,
     val id: Long,

@@ -11,7 +11,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(
+internal class UserRepositoryImpl @Inject constructor(
     private val githubUserService: GithubUserService,
 ) : UserRepository {
 

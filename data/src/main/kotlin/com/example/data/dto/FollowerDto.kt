@@ -2,7 +2,7 @@ package com.example.data.dto
 
 import com.squareup.moshi.Json
 
-data class FollowerDto(
+internal data class FollowerDto(
     val login: String,
     val id: Long,
 

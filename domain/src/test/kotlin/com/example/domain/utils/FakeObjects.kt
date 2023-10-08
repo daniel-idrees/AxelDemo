@@ -4,10 +4,10 @@ import com.example.domain.model.SearchResult
 import com.example.domain.model.User
 import com.example.domain.model.UserDetail
 
-object FakeObjects {
-    val mockSearchQuery = "mockSearchQuery"
-    val mockUserName = "mockUserName"
-    val mockImageUrl = "https://www.imageUrl.com"
+internal object FakeObjects {
+    const val mockSearchQuery = "mockSearchQuery"
+    const val mockUserName = "mockUserName"
+    const val mockImageUrl = "https://www.imageUrl.com"
 
     val mockSearchResult = SearchResult(
         users = listOf(
