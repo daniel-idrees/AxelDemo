@@ -15,9 +15,9 @@ internal class UserRepositoryImpl @Inject constructor(
     private val githubUserService: GithubUserService,
 ) : UserRepository {
 
-    override suspend fun getUsers(query: String): UserDataResult<SearchResult> =
+    override suspend fun searchUsers(searchQuery: String): UserDataResult<SearchResult> =
         runCatching {
-            val response = githubUserService.getUsers(query).toUserList()
+            val response = githubUserService.searchUsers(searchQuery).toUserList()
             UserDataResult.Success(response)
         }.getOrElse {
             getErrorResult(it)

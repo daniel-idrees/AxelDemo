@@ -22,11 +22,11 @@ internal class UserRepositoryImplTest {
     private val subject = UserRepositoryImpl(githubUserService)
 
     @Test
-    fun `getUsers should return success result when api response is successful`() {
+    fun `searchUsers should return success result when api response is successful`() {
         runBlocking {
-            whenever(githubUserService.getUsers(mockSearchQuery)) doReturn FakeObjects.mockSearchResultResponse
-            val result = subject.getUsers(mockSearchQuery)
-            verify(githubUserService).getUsers(mockSearchQuery)
+            whenever(githubUserService.searchUsers(mockSearchQuery)) doReturn FakeObjects.mockSearchResultResponse
+            val result = subject.searchUsers(mockSearchQuery)
+            verify(githubUserService).searchUsers(mockSearchQuery)
             verifyNoMoreInteractions(githubUserService)
             assert(result is UserDataResult.Success)
             val expected = mockSearchResult
@@ -35,12 +35,12 @@ internal class UserRepositoryImplTest {
     }
 
     @Test
-    fun `getUsers should return error result when api response throws exception`() {
+    fun `searchUsers should return error result when api response throws exception`() {
         runBlocking {
-            whenever(githubUserService.getUsers(mockSearchQuery)) doThrow IllegalArgumentException()
-            val result = subject.getUsers(mockSearchQuery)
+            whenever(githubUserService.searchUsers(mockSearchQuery)) doThrow IllegalArgumentException()
+            val result = subject.searchUsers(mockSearchQuery)
 
-            verify(githubUserService).getUsers(mockSearchQuery)
+            verify(githubUserService).searchUsers(mockSearchQuery)
             verifyNoMoreInteractions(githubUserService)
             assert(result is UserDataResult.Error)
         }

@@ -9,8 +9,8 @@ import retrofit2.http.Query
 
 internal interface GithubUserService {
     @GET("search/users")
-    suspend fun getUsers(
-        @Query("q") query: String,
+    suspend fun searchUsers(
+        @Query("q") searchQuery: String,
         @Query("sort") sort: String? = null,
         @Query("order") order: String? = null,
         @Query("per_page") perPage: Int? = null,

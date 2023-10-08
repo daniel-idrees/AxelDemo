@@ -20,11 +20,11 @@ internal class GetUsersUseCaseTest {
     @Test
     fun `get should return success result if the repository returns success result`() {
         runBlocking {
-            whenever(userRepository.getUsers(mockSearchQuery)) doReturn UserDataResult.Success(
+            whenever(userRepository.searchUsers(mockSearchQuery)) doReturn UserDataResult.Success(
                 FakeObjects.mockSearchResult,
             )
             val result = subject.get(mockSearchQuery)
-            verify(userRepository).getUsers(mockSearchQuery)
+            verify(userRepository).searchUsers(mockSearchQuery)
             verifyNoMoreInteractions(userRepository)
             result shouldBe UserDataResult.Success(FakeObjects.mockSearchResult)
         }
@@ -33,9 +33,9 @@ internal class GetUsersUseCaseTest {
     @Test
     fun `get should return error result if the repository returns error result`() {
         runBlocking {
-            whenever(userRepository.getUsers(mockSearchQuery)) doReturn UserDataResult.Error("")
+            whenever(userRepository.searchUsers(mockSearchQuery)) doReturn UserDataResult.Error("")
             val result = subject.get(mockSearchQuery)
-            verify(userRepository).getUsers(mockSearchQuery)
+            verify(userRepository).searchUsers(mockSearchQuery)
             verifyNoMoreInteractions(userRepository)
             result shouldBe UserDataResult.Error("")
         }

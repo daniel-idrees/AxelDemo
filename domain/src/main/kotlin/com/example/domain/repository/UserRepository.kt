@@ -5,6 +5,6 @@ import com.example.domain.model.UserDataResult
 import com.example.domain.model.UserDetail
 
 interface UserRepository {
-    suspend fun getUsers(query: String): UserDataResult<SearchResult>
+    suspend fun searchUsers(query: String): UserDataResult<SearchResult>
     suspend fun getUserDetails(userName: String): UserDataResult<UserDetail>
 }

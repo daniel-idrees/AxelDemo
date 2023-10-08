@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetUsersUseCase @Inject constructor(
     private val userRepository: UserRepository,
 ) {
-    suspend fun get(query: String) = userRepository.getUsers(query)
+    suspend fun get(query: String) = userRepository.searchUsers(query)
 }
