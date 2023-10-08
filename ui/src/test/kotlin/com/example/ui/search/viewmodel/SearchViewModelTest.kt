@@ -52,9 +52,9 @@ internal class SearchViewModelTest {
     @Test
     fun `loadDataIfNewSearchQuery should update result state to error if the use case returns error`() {
         runBlocking {
-            whenever(getUsersUseCase.get(mockSearchQuery)) doReturn UserDataResult.Error("")
+            whenever(getUsersUseCase.get(mockSearchQuery)) doReturn UserDataResult.Error("Error")
             subject.loadDataIfNewSearchQuery(mockSearchQuery)
-            subject.searchResultState.value shouldBe SearchResultState.Error
+            subject.searchResultState.value shouldBe SearchResultState.Error("Error")
         }
     }
 
